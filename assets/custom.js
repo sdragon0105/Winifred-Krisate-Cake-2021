@@ -10,3 +10,4 @@ for (let i = 0; i < content_item.length; i++) {
 
     content_item[i].querySelector('.group-grid-product__meta--position').style.left = width3+"px";
 }
+
