@@ -1,0 +1,80 @@
+<div
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-content-section"
+  class="text-{{ section.settings.align_text }} div--position"
+  style="z-index: 1; overflow: hidden;">
+
+  <div class="page-width" style="padding: 0;">
+    <div class="wafer-paper-learning-content">
+      <div class="header-title">
+        <div class="grid__item" style="margin: auto; color: rgb(255, 255, 255);">
+          {%- if section.settings.title != blank -%}
+            <h3 class="header-font-40">{{ section.settings.title }}</h3>
+          {%- endif -%}
+
+          {%- if section.settings.text != blank -%}
+            <div class="grid__item content-font">
+              {%- if section.settings.enlarge_text -%}<div class="enlarge-text enlarge-text--style ">{%- endif -%}
+                {{ section.settings.text }}
+              {%- if section.settings.enlarge_text -%}</div>{%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.button_label != blank -%}
+            <a href="{{ section.settings.button_link }}" class="btn btn--small button-font" style="background-color: rgb(255, 255, 255); ">
+              {{ section.settings.button_label }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Rich text",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>A sentence or two introducing your brand, what you sell, and what makes your brand compelling to customers.</p>"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centered"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label",
+        "default": "Optional button"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      }
+    ]
+
+  }
+{% endschema %}

@@ -1,0 +1,94 @@
+<div class="bws-login-overlay"></div>
+<div class="bws-login-popup" class="login-modal">
+    <button type="button" id="btn-login-modal-close">
+        <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.922589 1.86426L0.883926 1.82486L0.922589 1.78547L1.73206 0.960602L1.7722 0.91969L1.81235 0.960602L7.83208 7.09483L13.8518 0.960602L13.8919 0.91969L13.9321 0.960602L14.7416 1.78547L14.7802 1.82486L14.7416 1.86426L8.72035 8L14.7416 14.1357L14.7802 14.1751L14.7416 14.2145L13.9321 15.0394L13.8919 15.0803L13.8518 15.0394L7.83208 8.90517L1.81235 15.0394L1.7722 15.0803L1.73206 15.0394L0.922589 14.2145L0.883926 14.1751L0.922589 14.1357L6.9438 8L0.922589 1.86426Z" fill="#1C1D1D" stroke="#1C1D1D" stroke-width="0.1125"/>
+        </svg>    
+    </button>
+
+    <header class="section-header">
+        <img src="{{ 'login-modal-logo.svg' | asset_url }}">
+        <h1 class="section-header__title">Welcome Back!</h1>
+        <p>Please log in to your account.</p>
+    </header>
+
+    <div class="note note--success hide" id="ResetSuccess">
+        {{ 'customer.recover_password.success' | t }}
+    </div>
+
+    <div id="CustomerLoginFormPopup" class="form-vertical clearfix">
+        {%- form 'customer_login' -%}
+
+            {{ form.errors | default_errors }}
+            <div class="bws-login-popup-errors"></div>
+
+            <!-- <label for="CustomerEmail">{{ 'customer.login.email' | t }}</label> -->
+            <input type="email" name="customer[email]" id="CustomerEmailPopup" class="input-full{% if form.errors contains 'email' %} error{% endif %}" autocorrect="off" autocapitalize="off" autofocus placeholder="EMAIL ADDRESS">
+
+            {%- if form.password_needed -%}
+                <!-- <div class="grid">
+                <div class="grid__item one-half">
+                    <label for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+                </div>
+                </div> -->
+                <input type="password" value="" name="customer[password]" id="CustomerPasswordPopup" class="input-full{% if form.errors contains 'password' %} error{% endif %}" placeholder="PASSWORD">
+            {%- endif -%}
+
+            <p>
+                <button type="submit" class="btn btn--full">login</button>
+            </p>
+
+            <input type="hidden" name="checkout_url" id="redirect_url" value="" />
+
+        {%- endform -%}
+
+        <div class="grid__item one-half text-left">{{ 'layout.customer.create_account' | t | customer_register_link }}</div>
+        <div class="grid__item one-half text-right"><a href="{{ routes.account_login_url }}#recover" id="RecoverPasswordPopup">{{ 'customer.login.forgot_password' | t }}</a></div>
+        
+    </div>
+
+    {% comment %}
+    <div id="RecoverPasswordForm" class="hide">
+        <div class="form-vertical clearfix">
+            <h2>{{ 'customer.recover_password.title' | t }}</h2>
+            <p>{{ 'customer.recover_password.subtext' | t }}</p>
+
+            {%- form 'recover_customer_password' -%}
+
+                {{ form.errors | default_errors }}
+
+                {%- if form.posted_successfully? -%}
+                <span class="hide reset-password-success"></span>
+                {%- endif -%}
+
+                <!-- <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label> -->
+                <input type="email" value="" name="email" id="RecoverEmail" class="input-full" autocorrect="off" autocapitalize="off" placeholder="EMAIL ADDRESS">
+
+                <div class="grid__item one-half text-left">
+                    <button type="button" id="HideRecoverPasswordLink">{{ 'customer.recover_password.cancel' | t }}</button>
+                </div>
+                <div class="grid__item one-half text-right">
+                    <button type="submit" class="btn">
+                        {{ 'customer.recover_password.submit' | t }}
+                    </button>
+                </div>
+            {%- endform -%}
+        </div>
+
+    </div>
+
+    {%- if shop.checkout.guest_login -%}
+        <hr class="hr--clear">
+
+        <h1>{{ 'customer.login.guest_title' | t }}</h1>
+        <hr class="hr--small">
+
+        {%- form 'guest_login' -%}
+        <button type="submit" class="btn">
+            {{ 'customer.login.guest_continue' | t }}
+        </button>
+        {%- endform -%}
+    {%- endif -%}
+    {% endcomment %}
+
+</div>  

@@ -1,0 +1,97 @@
+<div class="icon-context-bar">
+    {%- if section.settings.bar_height and section.settings.color_bg -%}
+        {%- style -%}
+          .icon-context-bar {
+            background: {{ section.settings.color_bg }};
+            height: {{ section.settings.bar_height }}px;
+            display: flex;
+            justify-content: center;
+          }
+        {%- endstyle -%}
+    {%- endif -%}
+
+    <div class="context-style">
+        {% if section.blocks != blank %}
+            {% for block in section.blocks %}
+                <div class="context-item">
+                {%comment%}
+                    {% if block.settings.image != blank %}
+                        {%- assign img_url = block.settings.image | img_url -%}
+                        <img src="{{ img_url }}" > 
+                    {% else %}
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}    
+                {% endcomment %}
+
+                {% if block.settings.image != blank %}
+                    {% capture img_id %}FeatureRowImage-{{ section.id }}{% endcapture %}
+                    {% capture wrapper_id %}FeatureRowImageWrapper-{{ section.id }}{% endcapture %}
+                    {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                    {% include 'image-style', image: block.settings.image, height: 67, wrapper_id: wrapper_id, img_id: img_id %}
+                    <div id="{{ wrapper_id }}" class="feature-row__image-wrapper js" >
+                        <img id="{{ img_id }}"
+                            class="feature-row__image lazyload image_size"
+                            data-src="{{ img_url }}"
+                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                            data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                            data-sizes="auto"
+                            alt="{{ block.settings.image.alt | escape }}">                 
+                    </div>
+        
+                    <noscript>
+                        {{ section.settings.image | img_url: 'x67' | img_tag: section.settings.image.alt, 'feature-row__image' }}
+                    </noscript>
+
+                {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'image' }}
+                {% endif %}
+
+                    <p>{{ block.settings.subcontent }}</p>                    
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Icon Context Bar",         
+    "blocks": [
+       {
+           "type": "text",
+           "name": "Content",
+           "settings":[
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "subcontent",
+                    "label": "Context"
+                }
+            ]
+       }
+    ], 
+    "settings":
+    [
+        {
+            "type": "range",
+            "id": "bar_height",
+            "label": "Context Bar Height",
+            "default": 290,
+            "min": 150,
+            "max": 400,
+            "step": 10,
+            "unit": "px"
+        },
+        {
+            "type": "color",
+            "id": "color_bg",
+            "label": "Background colors",
+            "default": "#e5e5e5"
+        }
+    ]
+}
+{% endschema %}

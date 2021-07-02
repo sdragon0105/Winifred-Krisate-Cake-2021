@@ -1,0 +1,164 @@
+{%- if section.settings.page_title_enable or section.settings.page_content_enable -%}
+  <div class="page-width page-content{% if section.blocks.size > 0 %} page-content--with-blocks{% endif %}">
+
+    <div class="grid">
+      <div class="grid__item medium-up--three-quarters medium-up--push-one-eighth">
+        {%- render 'breadcrumbs' -%}
+
+        {%- if section.settings.page_title_enable -%}
+          <header class="section-header">
+            <h1 class="section-header__title header-font">{{ page.title }}</h1>
+          </header>
+        {%- endif -%}
+
+        {%- if section.settings.page_content_enable -%}
+          <div class="rte text-spacing content-font">
+            {{ page.content }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="page-width page-content" style="padding: 0 150px; height: 1500px;">
+    <div class="grid" style="display: flex; flex-direction: row;">
+      <div class="grid-item medium-up--one-quarter" style="padding-top: 30px;">
+        <div class="page-blocks page-blocks--flush" itemscope itemtype="https://schema.org/FAQPage">
+          {%- for block in section.blocks -%}
+            <div {{ block.shopify_attributes }}>
+              {%- if block.type ==  'rich-text' -%}
+                {%comment%}
+                  {%- render 'page-block-rich-text', section_class: 'index-section--faq', block: block -%}
+                {%endcomment%}
+
+                    <span class="faq-title">{{ block.settings.title }}</span>
+
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="grid__item medium-up--three-quarters ">
+
+        <div class="page-blocks page-blocks--flush" itemscope itemtype="https://schema.org/FAQPage" style="max-width: 700px;">
+          {%- for block in section.blocks -%}
+            <div {{ block.shopify_attributes }}>
+              {%- case block.type -%}
+                {%- when 'rich-text'-%}
+                  {%- render 'page-block-rich-text', section_class: '', block: block -%}
+
+                {%- when 'question'-%}
+                  {%- render 'page-block-faq', block: block -%}
+
+              {%- endcase -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Faq page",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "page_title_enable",
+        "label": "Show page title"
+      },
+      {
+        "type": "checkbox",
+        "id": "page_content_enable",
+        "label": "Show page content"
+      }
+    ],
+    "default": {
+      "blocks": [
+        {
+          "type": "rich-text",
+          "settings": {
+            "title": "Shipping policy"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "Where do you ship to?"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "How long will my order take?"
+          }
+        },
+        {
+          "type": "rich-text",
+          "settings": {
+            "title": "Returns and exchanges"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "How do I ship my order back to you?"
+          }
+        }
+      ]
+    },
+    "blocks": [
+      {
+        "type": "rich-text",
+        "name": "Title",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Rich text"
+          },
+          {
+            "type": "select",
+            "id": "align_text",
+            "label": "Text alignment",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Centered"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "question",
+        "name": "Question",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question",
+            "default": "Frequently asked question"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

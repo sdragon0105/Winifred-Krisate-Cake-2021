@@ -1,0 +1,87 @@
+<div class="intafeed-style">
+
+    <style>
+        .insta-feed-page-width {
+            margin-top: 75px;
+        }
+        .insta-feed-page-width .section-header__title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #insta-feed {
+            width: {{section.settings.feed_width}}%;
+        }
+    
+        #insta-feed h2 {
+            font-size: {{section.settings.heading_size}}px;
+            font-family: {{section.settings.heading_font.family}};
+            text-align:center;
+        }
+    
+        {{section.settings.heading_font | font_face}}
+    </style>
+    
+    {% if section.settings.html_area != blank %}
+    <div class="insta-feed-page-width page-width">
+        <div class="section-header section-header--with-link">
+            <h2 class="section-header__title">
+            {{ section.settings.html_area }}
+            </h2>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% unless section.settings.html_area contains "feed-" %}
+        <div id="insta-feed"{% if template == 'product' %} class="page-width"{% endif %}></div>
+    {% endunless  %}
+</div>
+
+{%schema%}
+{
+    "name": "Instafeed App",
+    "settings":
+    [
+        {
+            "type": "font_picker",
+            "label": "Heading font.",
+            "id": "heading_font",
+            "default": "helvetica_n4"
+        },
+        {
+            "type": "range",
+            "id": "heading_size",
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px",
+            "label": "Heading Size",
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "feed_width",
+            "min": 50,
+            "max": 100,
+            "step": 5,
+            "unit": "%",
+            "label": "Feed Width",
+            "default": 100
+        },
+        {
+            "type": "html",
+            "id": "html_area",
+            "label": "Custom Code (optional)",
+            "info": "Save to see your changes"
+        }
+    ],
+    "presets":
+    [
+        {
+            "name":
+            "Instafeed App",
+            "category":"Instagram Feed"
+        }
+    ]
+}
+{%endschema%}

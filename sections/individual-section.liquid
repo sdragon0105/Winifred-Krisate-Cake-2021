@@ -1,0 +1,164 @@
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+{% style %}
+  .background-image {
+    background-image: url({{'Path108.png' | asset_url }});
+    height: 1200px;
+    width: 1200px;
+    background-size: 100% 100%;
+    position: absolute;
+    top: -300px;
+    left: -700px;
+    z-index: -1;
+  }
+{% endstyle %}
+
+<div
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-content-section"
+  class="text-{{ section.settings.align_text }} div--position"
+  style="z-index: 1;">
+
+  <div class="header-title">
+    <div class="grid__item{% if section.settings.narrow_column %} medium-up--three-quarters{% endif %}" style="margin: auto;">
+      {%- if section.settings.title != blank -%}
+        <h2 class="header-font">{{ section.settings.title }}</h2>
+      {%- endif -%}
+    </div>
+  </div>
+
+
+  <div>
+    {% for block in section.blocks %}
+      <div class="feature-row__item">
+        {% if block.type == 'text' %}
+          {% if block.settings.image != blank %}
+            {% capture img_id %}FeatureRowImage-{{ section.id }}{% endcapture %}
+            {% capture wrapper_id %}FeatureRowImageWrapper-{{ section.id }}{% endcapture %}
+            {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+            {% include 'image-style', image: block.settings.image, height: 404, wrapper_id: wrapper_id, img_id: img_id %}
+            <div id="{{ wrapper_id }}" class="feature-row__image-wrapper js feature-row__image-wrapper--align" style="z-index: 1;">
+              <img id="{{ img_id }}"
+                  class="feature-row__image lazyload"
+                  data-src="{{ img_url }}"
+                  data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                  data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                  data-sizes="auto"
+                  alt="{{ block.settings.image.alt }}">
+            </div>
+
+            <noscript>
+              {{ block.settings.image | img_url: '1920x404' | img_tag: block.settings.image.alt, 'feature-row__image' }}
+            </noscript>
+
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'image-size'}}
+          {% endif %}
+        {% endif %}
+
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="individual-text-content">
+    {% for block in section.blocks %}
+      {% if block.type =='custom' %}
+        <div class="individual-text">
+          {%- if block.settings.text != blank -%}
+            <div class="individual-text--align content-font">
+              {%- if section.settings.enlarge_text -%}<div class="enlarge-text enlarge-text--style ">{%- endif -%}
+                {{ block.settings.text }}
+              {%- if section.settings.enlarge_text -%}</div>{%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+
+  {% if section.settings.background_mark == true %}
+    <div class="background-image"></div>
+  {% endif %}
+
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Individual text",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centered"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "narrow_column",
+        "label": "Narrow column"
+      },
+      {
+        "type": "checkbox",
+        "id": "enlarge_text",
+        "label": "Enlarge text",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "divider",
+        "label": "Show section divider",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "background_mark",
+        "label": "Show background mark",
+        "default": false
+      }
+    ],
+    "blocks":[
+      {
+        "type": "text",
+        "name": "Image Content",
+        "settings":[
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      },
+      {
+        "type": "custom",
+        "name": "Text Content",
+        "settings":[
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>A sentence or two introducing your brand, what you sell, and what makes your brand compelling to customers.</p>"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

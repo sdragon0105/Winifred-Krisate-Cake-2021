@@ -1,0 +1,386 @@
+{%- liquid
+  assign show_selectors = false
+  assign currency_selector = false
+  assign locale_selector = false
+
+  if section.settings.show_currency_selector and shop.enabled_currencies.size > 1
+    assign currency_selector = true
+  endif
+
+  if section.settings.show_locale_selector and shop.enabled_locales.size > 1
+    assign locale_selector = true
+  endif
+
+  if currency_selector or locale_selector
+    assign show_selectors = true
+  endif
+-%}
+
+{%- if settings.color_footer == settings.color_body_bg -%}
+  {%- style -%}
+    .site-footer {
+      border-top: 1px solid {{ settings.color_borders }};
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
+<footer class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
+  <div class="page-width">
+
+    <div class="grid">
+      {%- assign row_width = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- assign row_width = row_width | plus: block.settings.container_width -%}
+        {%- if row_width > 100 -%}
+          <div class="footer__clear small--hide"></div>
+          {%- assign row_width = row_width | minus: 100 -%}
+        {%- endif -%}
+
+        <div {{ block.shopify_attributes }} class="grid__item footer__item--{{ block.id }}" data-type="{{ block.type }}">
+          {%- style -%}
+            @media only screen and (min-width: 769px) and (max-width: 959px) {
+              .footer__item--{{ block.id }} {
+                width: 50%;
+                padding-top: 40px;
+              }
+              .footer__item--{{ block.id }}:nth-child(2n + 1) {
+                clear: left;
+              }
+            }
+            @media only screen and (min-width: 960px) {
+              .footer__item--{{ block.id }} {
+                width: {{ block.settings.container_width }}%;
+              }
+
+            }
+          {%- endstyle -%}
+
+          {%- liquid
+            case block.type
+              when 'logo_social'
+                render 'footer-logo', block: block
+              when 'custom'
+                render 'footer-custom-text', block: block
+              when 'newsletter'
+                render 'footer-newsletter', block: block
+              when 'menu'
+                render 'footer-menu', block: block
+            endcase
+          -%}
+        </div>
+      {%- endfor -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'logo' -%}
+          <div class="grid__item medium-up--hide">
+            {%- render 'footer-logo', block: block -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if show_selectors -%}
+      <div class="footer__section">
+        {%- render 'multi-selectors',
+          locale_selector: locale_selector,
+          currency_selector: currency_selector,
+          show_currency_flags: section.settings.show_currency_flags
+          location: 'footer'
+        -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_payment_icons -%}
+      {%- unless shop.enabled_payment_types == empty -%}
+        <ul class="inline-list payment-icons footer__section">
+          {%- for type in shop.enabled_payment_types -%}
+            <li class="icon--payment">
+              {{ type | payment_type_svg_tag }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endunless -%}
+
+      <!-- additional payment methods -->
+      {% comment %}
+      <style>
+        .footer-additional-payment-methods {
+          max-width: 440px;
+          margin: auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .footer-additional-payment-methods > div {
+          margin: 15px;
+        }
+        @media screen and (max-width: 480px) {
+          .footer-additional-payment-methods > div {
+            max-width: 90px;
+            margin: 5px 10px 10px;
+          }
+          .footer-additional-payment-methods img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      </style>
+
+      <div class="footer-additional-payment-methods clearfix">
+        <div>
+          <img
+          src="https://cdn.shopify.com/s/images/badges/shopify-secure-badge-white.svg" alt="Shopify secure badge" />
+        </div>
+        <div>
+          <!-- (c) 2005, 2020. Authorize.Net is a registered trademark of CyberSource Corporation -->
+          <div class="AuthorizeNetSeal">
+            <script type="text/javascript" language="javascript">var ANS_customer_id="eae5f022-92c1-4d9e-ad21-7262f6a4365f";</script>
+            <script type="text/javascript" language="javascript" src="//verify.authorize.net:443/anetseal/seal.js" ></script>
+          </div>
+        </div>
+        <div>
+          <img src={{ 'Sezzle_Logo_FullColor-small.png' | asset_img_url: '150x' }} alt="Sezzle Logo">
+        </div>
+      </div>
+      {% endcomment %}
+
+    {%- endif -%}
+
+    <p class="footer-social-icons">
+      <a target="_blank" rel="noopener" href="https://facebook.com/vitalbodytherapeutics" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Facebook' }}">
+        <svg width="35" height="35" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M13.3842 0.582031C5.99231 0.582031 0 6.7046 0 14.2572C0 21.8098 5.99231 27.9323 13.3842 27.9323C20.7761 27.9323 26.7684 21.8098 26.7684 14.2572C26.7684 6.7046 20.7761 0.582031 13.3842 0.582031ZM14.7793 14.858V22.298H11.7664V14.8582H10.2612V12.2944H11.7664V10.755C11.7664 8.66344 12.6164 7.41969 15.0311 7.41969H17.0415V9.98385H15.7849C14.8449 9.98385 14.7827 10.3422 14.7827 11.0108L14.7793 12.2941H17.0557L16.7893 14.858H14.7793Z" fill="#3b5998"/>
+        </svg>
+        <span class="icon__fallback-text">Facebook</span>
+      </a>
+      <a target="_blank" rel="noopener" href="https://instagram.com/vitalbodytherapeutics" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Instagram' }}" style="margin-right:0;">
+        <svg width="35" height="35" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.647 14.257C17.647 15.7641 16.4253 16.9859 14.9181 16.9859C13.4109 16.9859 12.1892 15.7641 12.1892 14.257C12.1892 12.7498 13.4109 11.5281 14.9181 11.5281C16.4253 11.5281 17.647 12.7498 17.647 14.257Z" fill="#047A83"/>
+          <path d="M21.3002 9.4287C21.169 9.07323 20.9597 8.75148 20.6878 8.48738C20.4237 8.21545 20.1022 8.00617 19.7465 7.87499C19.458 7.76296 19.0247 7.6296 18.2265 7.59327C17.363 7.55389 17.1042 7.54541 14.9183 7.54541C12.7321 7.54541 12.4733 7.55368 11.61 7.59305C10.8119 7.6296 10.3783 7.76296 10.0901 7.87499C9.73437 8.00617 9.41262 8.21545 9.14873 8.48738C8.8768 8.75148 8.66752 9.07302 8.53612 9.4287C8.42409 9.71717 8.29073 10.1507 8.2544 10.9489C8.21503 11.8121 8.20654 12.071 8.20654 14.2571C8.20654 16.443 8.21503 16.7019 8.2544 17.5653C8.29073 18.3635 8.42409 18.7969 8.53612 19.0853C8.66752 19.441 8.87658 19.7626 9.14852 20.0267C9.41262 20.2986 9.73415 20.5079 10.0898 20.639C10.3783 20.7513 10.8119 20.8847 11.61 20.921C12.4733 20.9604 12.7319 20.9686 14.918 20.9686C17.1044 20.9686 17.3633 20.9604 18.2263 20.921C19.0244 20.8847 19.458 20.7513 19.7465 20.639C20.4605 20.3636 21.0248 19.7993 21.3002 19.0853C21.4122 18.7969 21.5456 18.3635 21.5821 17.5653C21.6215 16.7019 21.6298 16.443 21.6298 14.2571C21.6298 12.071 21.6215 11.8121 21.5821 10.9489C21.5458 10.1507 21.4124 9.71717 21.3002 9.4287ZM14.9183 18.4608C12.5964 18.4608 10.7142 16.5788 10.7142 14.2569C10.7142 11.935 12.5964 10.0531 14.9183 10.0531C17.2399 10.0531 19.1221 11.935 19.1221 14.2569C19.1221 16.5788 17.2399 18.4608 14.9183 18.4608ZM19.2883 10.8693C18.7458 10.8693 18.3059 10.4294 18.3059 9.88685C18.3059 9.34429 18.7458 8.90442 19.2883 8.90442C19.8309 8.90442 20.2708 9.34429 20.2708 9.88685C20.2705 10.4294 19.8309 10.8693 19.2883 10.8693Z" fill="#047A83"/>
+          <path d="M14.9182 0C7.04545 0 0.661133 6.38431 0.661133 14.2571C0.661133 22.1298 7.04545 28.5141 14.9182 28.5141C22.791 28.5141 29.1753 22.1298 29.1753 14.2571C29.1753 6.38431 22.791 0 14.9182 0ZM23.0555 17.6323C23.0159 18.5038 22.8773 19.0988 22.675 19.6196C22.2497 20.7193 21.3804 21.5886 20.2807 22.0139C19.7601 22.2162 19.1649 22.3546 18.2936 22.3944C17.4206 22.4342 17.1417 22.4438 14.9184 22.4438C12.6949 22.4438 12.4162 22.4342 11.543 22.3944C10.6717 22.3546 10.0765 22.2162 9.55592 22.0139C9.00945 21.8083 8.51475 21.4861 8.10576 21.0695C7.68938 20.6607 7.3672 20.1658 7.16161 19.6196C6.9593 19.099 6.82072 18.5038 6.78113 17.6325C6.74088 16.7593 6.73153 16.4804 6.73153 14.2571C6.73153 12.0338 6.74088 11.7549 6.78091 10.8819C6.8205 10.0104 6.95886 9.41538 7.16118 8.89457C7.36676 8.34831 7.68916 7.8534 8.10576 7.44463C8.51453 7.02803 9.00945 6.70584 9.55571 6.50026C10.0765 6.29795 10.6715 6.15959 11.543 6.11978C12.416 6.07997 12.6949 6.07039 14.9182 6.07039C17.1415 6.07039 17.4204 6.07997 18.2934 6.11999C19.1649 6.15959 19.7599 6.29795 20.2807 6.50005C20.827 6.70563 21.3219 7.02803 21.7309 7.44463C22.1472 7.85362 22.4697 8.34831 22.675 8.89457C22.8775 9.41538 23.0159 10.0104 23.0557 10.8819C23.0955 11.7549 23.1049 12.0338 23.1049 14.2571C23.1049 16.4804 23.0955 16.7593 23.0555 17.6323Z" fill="#047A83"/>
+        </svg>
+        <span class="icon__fallback-text">Instagram</span>
+      </a>
+    </p>
+
+    {%- if section.settings.show_copyright -%}
+      <p class="footer__small-text">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+        {%- if section.settings.copyright_text != blank -%}
+          {{ section.settings.copyright_text }}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+    <!-- <p class="footer__small-text">{{ powered_by_link }}</p> -->
+    <div class="footer-mark">
+      <img src="{{ 'menu-icon.png' | asset_url }}">
+      <p style="margin: 0; padding-left: 10px;">© Winifred Kriste Cake</p>
+    </div>
+
+  </div>
+</footer>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "max_blocks": 12,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Language selector",
+        "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_locale_selector",
+        "label": "Show language selector",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Currency selector",
+        "info": "To add a currency, go to your [currency settings.](/admin/settings/payments)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_selector",
+        "label": "Show currency selector",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_flags",
+        "label": "Show currency flags",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Additional footer content"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_copyright",
+        "label": "Show copyright"
+      },
+      {
+        "type": "text",
+        "id": "copyright_text",
+        "label": "Additional copyright text"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "logo_social",
+        "name": "Logo",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo image"
+          },
+          {
+            "type": "range",
+            "id": "desktop_logo_height",
+            "label": "Logo height",
+            "default": 50,
+            "min": 20,
+            "max": 120,
+            "unit": "px"
+          },
+          {
+            "type": "range",
+            "id": "container_width",
+            "label": "Column width",
+            "default": 25,
+            "min": 15,
+            "max": 95,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "type": "menu",
+        "name": "Navigation",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_footer_title",
+            "label": "Show heading"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Choose a menu",
+            "default": "footer",
+            "info": "This menu won't show dropdown items"
+          },
+          {
+            "type": "range",
+            "id": "container_width",
+            "label": "Column width",
+            "default": 25,
+            "min": 15,
+            "max": 95,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "type": "newsletter",
+        "name": "Newsletter and social",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_footer_title",
+            "label": "Show heading",
+            "default": true
+          },
+          {
+            "type": "paragraph",
+            "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers)."
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Sign up and save"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "info": "Optional",
+            "default": "<p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+          },
+          {
+            "type": "range",
+            "id": "container_width",
+            "label": "Column width",
+            "default": 25,
+            "min": 15,
+            "max": 95,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "type": "custom",
+        "name": "Custom text",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_footer_title",
+            "label": "Show heading",
+            "default": true
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Custom text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Add your own custom text here.</p>"
+          },
+          {
+            "type": "range",
+            "id": "container_width",
+            "label": "Column width",
+            "default": 25,
+            "min": 15,
+            "max": 95,
+            "unit": "%"
+          }
+        ]
+      }
+    ],
+    "default": {
+      "settings": {},
+      "blocks": [
+        {
+          "type": "menu",
+          "settings": {}
+        },
+        {
+          "type": "logo_social",
+          "settings": {}
+        }
+      ]
+    }
+  }
+{% endschema %}

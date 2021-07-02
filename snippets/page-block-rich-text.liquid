@@ -1,0 +1,20 @@
+<div class=" {{ section_class }}">
+  <div class="page-width text-{{ block.settings.align_text }}">
+    <div class="grid">
+      <div class="grid__item" style="padding: 0; padding-top: 30px;">
+        {%- if block.settings.title != blank -%}
+          <span class="fag-title--large">
+            {{ block.settings.title | escape }}
+          </span>
+        {%- endif -%}
+        {%- if block.settings.text != blank -%}
+          <div class="rte">
+            {%- if block.settings.enlarge_text %}<div class="enlarge-text">{% endif -%}
+              {{ block.settings.text }}
+            {%- if block.settings.enlarge_text %}</div>{% endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

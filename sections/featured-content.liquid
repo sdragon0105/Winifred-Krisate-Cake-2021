@@ -1,0 +1,217 @@
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+{% style %}
+  .background-image {
+    background-image: url({{'Path108.png' | asset_url }});
+    height: 600px;
+    width: 600px;
+    background-size: 100% 100%;
+    position: absolute;
+    top: -300px;
+    right: -470px;
+  }
+  .image-background {
+    background-color: {{ section.settings.color_bg }};
+    width: 100%;
+    height: {{ section.settings.background-color_height }}px;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+  }
+  .title-new-mark {
+    height: 119px;
+    width: 90px;
+    background-size: 100% 100%;
+    position: absolute;
+    top: -32px;
+    right: -60px;
+  }
+{% endstyle %}
+
+<div
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-content-section"
+  class="text-{{ section.settings.align_text }} div--position"
+  style="z-index: 1;">
+
+  <div class="page-width" style="position: relative; z-index: 1; overflow: hidden;">
+    <div class="header-title">
+      <div class="grid__item{% if section.settings.narrow_column %} medium-up--three-quarters{% endif %}" style="margin: auto; padding-top: 60px; padding-left: 0; max-width: 1010px;">
+        {%- if section.settings.title != blank -%}
+          <div style="display: inline-block; position: relative;">
+            <h2 class="header-font">{{ section.settings.title }}</h2>
+            {% if section.settings.title-new_mark == true %}
+              <div class="title-new-mark">
+                <img src="{{ 'title-new-mark.png' | asset_url }}">
+              </div>
+            {% endif %}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+
+            <div class="content-font {% if section.settings.enlarge_text %} enlarge-text enlarge-text--style{% endif %}" style="margin-bottom: 50px;">
+              {{ section.settings.text }}
+            </div>
+
+        {%- endif -%}
+      </div>
+
+      {% if section.settings.background_mark == true %}
+        <div class="background-image"></div>
+      {% endif %}
+    </div>
+
+    {% for block in section.blocks %}
+      <div class="feature-row__item">
+        {% if block.settings.image != blank %}
+          {% capture img_id %}FeatureRowImage-{{ section.id }}{% endcapture %}
+          {% capture wrapper_id %}FeatureRowImageWrapper-{{ section.id }}{% endcapture %}
+          {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          {% include 'image-style', image: block.settings.image, height: 701, wrapper_id: wrapper_id, img_id: img_id %}
+          <div id="{{ wrapper_id }}" class="feature-row__image-wrapper js feature-row__image-wrapper--align" style="z-index: 1;">
+            <img id="{{ img_id }}"
+                class="feature-row__image lazyload"
+                data-src="{{ img_url }}"
+                data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                data-sizes="auto"
+                alt="{{ block.settings.image.alt }}">
+          </div>
+
+          <noscript>
+            {{ block.settings.image | img_url: '1624x701' | img_tag: block.settings.image.alt, 'feature-row__image' }}
+          </noscript>
+
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'image-size'}}
+        {% endif %}
+
+        {% if block.settings.text != blank %}
+          <div class="grid__item--align content-font">
+            {{ block.settings.text }}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if section.settings.background_color == true %}
+    <div class="image-background"></div>
+  {% endif %}
+
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Rich text",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "checkbox",
+        "id": "title-new_mark",
+        "label": "Show Title 'NEW' mark",
+        "default": false
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>A sentence or two introducing your brand, what you sell, and what makes your brand compelling to customers.</p>"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centered"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "narrow_column",
+        "label": "Narrow column"
+      },
+      {
+        "type": "checkbox",
+        "id": "enlarge_text",
+        "label": "Enlarge text",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "divider",
+        "label": "Show section divider",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "background_mark",
+        "label": "Show background mark",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Design"
+      },
+      {
+        "type": "checkbox",
+        "id": "background_color",
+        "label": "Show Background Color",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "background-color_height",
+        "label": "Background color Height",
+        "default": 500,
+        "min": 100,
+        "max": 1000,
+        "step": 10,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background Color",
+        "default": "rgba(0,0,0,0)"
+      }
+    ],
+    "presets": [{
+      "name": "Rich text",
+      "category": "Text"
+    }],
+    "blocks":[
+      {
+        "type": "text",
+        "name": "Content",
+        "settings":[
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

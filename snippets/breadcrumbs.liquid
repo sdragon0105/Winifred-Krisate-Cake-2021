@@ -1,0 +1,137 @@
+{%- if settings.show_breadcrumbs -%}
+<div class="page-width" style="padding-top: 40px; padding-bottom: 20px;">
+{%- unless template.name == 'index' or template.name == 'cart' -%}
+  <nav class="breadcrumb breadcrumb--align" role="navigation" aria-label="breadcrumbs">
+
+    <div style="padding-right: 10px;">
+      <img src="{{ 'menu-icon.png' | asset_url }}">
+    </div>
+    <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t | upcase}}</a>
+
+    {%- if template.name == 'product' -%}
+
+      {%- if collection -%}
+        {% if settings.show_breadcrumbs_collection_link %}
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <a href="{{ routes.collections_url }}">{{ 'general.search.collections' | t | replace: ':', ''}}</a>
+        {% endif %}
+
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        {% if collection.handle %}
+          {%- capture url -%}{{ routes.collections_url }}/{{ collection.handle }}{%- endcapture -%}
+          {{ collection.title | link_to: url }}
+        {%- endif -%}
+      {% endif %}
+      <!-- <span class="breadcrumb__divider" aria-hidden="true">/</span> -->
+
+    {%- elsif template.name == 'collection' and collection.handle -%}
+      {% if settings.show_breadcrumbs_collection_link %}
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        <a href="{{ routes.collections_url }}">{{ 'general.search.collections' | t | replace: ':', ''}}</a>
+      {% endif %}
+
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+
+      {%- if current_tags -%}
+
+        {%- capture url -%}{{ routes.collections_url }}/{{ collection.handle }}{%- endcapture -%}
+        {{ collection.title | link_to: url }}
+
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+
+        {%- for tag in current_tags -%}
+          {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+
+          {%- assign tag_name = tag | strip -%}
+          {%- assign tag_text = tag_name | capitalize -%}
+          <span>{{ tag_text }}</span>
+
+          {%- unless forloop.last -%}
+            <span>+</span>
+          {%- endunless -%}
+
+        {%- endfor -%}
+      {%- endif -%}
+
+    {%- elsif template.name == 'blog' -%}
+
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+      {%- if current_tags -%}
+        {{ blog.title | link_to: blog.url }}
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        <span>{{ current_tags | join: " + " }}</span>
+      {%- endif -%}
+
+    {%- elsif template.name == 'article' -%}
+
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+      {{ blog.title | link_to: blog.url }}
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+
+    {%- elsif template.name == 'page' -%}
+
+      {% for link in linklists.main-menu.links %}
+        {% if link.child_active or link.active %}
+        <span class="breadcrumb__divider" aria-hidden="true"> / </span>
+          <a href="{{ link.url }}">
+          {{ link.title | escape | upcase}}
+          </a>
+          {% for clink in link.links %}
+            {% if clink.child_active or clink.active %}
+            <span class="breadcrumb__divider" aria-hidden="true"> - </span>
+              <a href="{{ clink.url }}">
+              {{ clink.title | escape | upcase}}
+              </a>
+              {% for gclink in clink.links %}
+                {% if gclink.child_active or gclink.active %}
+                <span class="breadcrumb__divider" aria-hidden="true"> - </span>
+                  <a href="{{ gclink.url }}">
+                  {{ gclink.title | escape | upcase}}
+                  </a>
+                {% endif %}
+              {%- endfor -%}
+            {% endif %}
+          {%- endfor -%}
+        {% endif %}
+      {%- endfor -%}
+
+      {% for link in linklists.observe-menu.links %}
+        {% if link.child_active or link.active %}
+        <span class="breadcrumb__divider" aria-hidden="true"> / </span>
+          <a href="{{ link.url }}">
+          {{ link.title | escape | upcase}}
+          </a>
+          {% for clink in link.links %}
+            {% if clink.child_active or clink.active %}
+            <span class="breadcrumb__divider" aria-hidden="true"> - </span>
+              <a href="{{ clink.url }}">
+              {{ clink.title | escape | upcase}}
+              </a>
+              {% for gclink in clink.links %}
+                {% if gclink.child_active or gclink.active %}
+                <span class="breadcrumb__divider" aria-hidden="true"> - </span>
+                  <a href="{{ gclink.url }}">
+                  {{ gclink.title | escape | upcase}}
+                  </a>
+                {% endif %}
+              {%- endfor -%}
+            {% endif %}
+          {%- endfor -%}
+        {% endif %}
+      {%- endfor -%}
+
+    {%- elsif template.name == 'search' -%}
+
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+      <span>{{ page_title | replace: '*', '' }}</span>
+
+    {%- else -%}
+
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+      <span>{{ page_title }}</span>
+
+    {%- endif -%}
+  </nav>
+{%- endunless -%}
+</div>
+{%- endif -%}

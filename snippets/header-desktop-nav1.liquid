@@ -1,0 +1,161 @@
+{%- liquid
+  unless limit
+    assign limit = main_menu.links.size
+  endunless
+  unless offset
+    assign offset = 0
+  endunless
+
+  assign cart_flag = false
+-%}
+
+<ul
+  class="site-nav site-navigation small--hide"
+  {% unless disable_aria %}
+    role="navigation" aria-label="Primary"
+  {% endunless %}>
+  {%- for link in main_menu.links limit: limit  offset: offset -%}
+    {%- liquid
+      assign has_dropdown = false
+      assign is_megamenu = false
+      if link.links != blank
+        assign has_dropdown = true
+        if link.levels > 1
+          assign is_megamenu = true
+        endif
+      endif
+    -%}
+
+    <li
+      class="site-nav__item site-nav__expanded-item{% if has_dropdown %} site-nav--has-dropdown{% endif %}{% if is_megamenu %} site-nav--is-megamenu{% endif %}"
+      {% if has_dropdown %}aria-haspopup="true"{% endif %}>
+
+      {% if forloop.index ==  3 %}
+        <a href="{{ routes.cart_url }}" class="site-nav__link site-nav__link--icon js-drawer-open-cart" aria-controls="CartDrawer" data-icon="{{ settings.cart_icon }}">
+
+          <span class="cart-link">
+            {%- if settings.cart_icon == 'cart' -%}
+
+            <svg width="33" height="30" viewBox="0 0 33 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M25.7573 22.0655H9.11933C8.94822 22.0656 8.78229 22.0068 8.64935 21.899C8.51641 21.7913 8.42453 21.6412 8.38911 21.4737L4.16413 1.49253H-3V0H4.76861C4.93966 5.83207e-05 5.1055 0.0588767 5.23836 0.166607C5.37123 0.274338 5.46305 0.424441 5.49846 0.591788L9.72418 20.573H25.7573C26.3156 20.5744 26.8582 20.3883 27.298 20.0444C27.7378 19.7005 28.0493 19.2189 28.1826 18.6767L31.0617 7.02757C31.087 6.92519 31.0886 6.81842 31.0665 6.71532C31.0444 6.61223 30.9991 6.5155 30.9341 6.43247C30.8691 6.34944 30.7861 6.28227 30.6914 6.23604C30.5966 6.18982 30.4925 6.16574 30.3871 6.16563H11.8469V4.67311H30.3841C30.7164 4.67263 31.0443 4.74784 31.3432 4.89301C31.642 5.03818 31.9038 5.24951 32.1088 5.51096C32.3138 5.77242 32.4566 6.07712 32.5263 6.40196C32.5959 6.72681 32.5907 7.06325 32.511 7.38578L29.6315 19.0346C29.4188 19.9009 28.9213 20.6706 28.2187 21.2203C27.5162 21.7699 26.6493 22.0676 25.7573 22.0655Z" fill="#1C1D1D"/>
+              <path d="M13.3945 30C12.7795 30 12.1783 29.8176 11.667 29.4759C11.1557 29.1343 10.7571 28.6486 10.5218 28.0805C10.2865 27.5123 10.2249 26.8871 10.3449 26.2839C10.4649 25.6808 10.7611 25.1268 11.196 24.6919C11.6309 24.2571 12.1849 23.961 12.7881 23.8411C13.3913 23.7211 14.0165 23.7828 14.5846 24.0182C15.1528 24.2536 15.6383 24.6521 15.98 25.1635C16.3216 25.6749 16.5039 26.2761 16.5038 26.891C16.5028 27.7154 16.1749 28.5056 15.592 29.0884C15.0091 29.6713 14.2188 29.9991 13.3945 30ZM13.3945 25.2739C13.0747 25.2739 12.7621 25.3687 12.4963 25.5464C12.2304 25.724 12.0232 25.9765 11.9008 26.2719C11.7784 26.5673 11.7464 26.8923 11.8087 27.206C11.8711 27.5196 12.025 27.8077 12.2511 28.0338C12.4772 28.2599 12.7652 28.4139 13.0788 28.4763C13.3924 28.5388 13.7175 28.5068 14.0129 28.3845C14.3084 28.2622 14.5609 28.055 14.7386 27.7892C14.9163 27.5234 15.0112 27.2108 15.0113 26.891C15.0108 26.4624 14.8403 26.0515 14.5372 25.7484C14.2341 25.4453 13.8231 25.2748 13.3945 25.2743V25.2739Z" fill="#1C1D1D"/>
+              <path d="M24.0673 30C23.4523 30.0003 22.851 29.8182 22.3395 29.4767C21.8279 29.1352 21.4292 28.6497 21.1936 28.0815C20.9581 27.5134 20.8963 26.8881 21.0161 26.2849C21.136 25.6816 21.432 25.1274 21.8668 24.6925C22.3017 24.2575 22.8557 23.9612 23.4589 23.8412C24.0621 23.7211 24.6874 23.7827 25.2556 24.018C25.8239 24.2534 26.3095 24.652 26.6512 25.1634C26.9929 25.6748 27.1752 26.276 27.1752 26.8911C27.1742 27.7151 26.8465 28.5051 26.2639 29.0879C25.6813 29.6707 24.8914 29.9987 24.0673 30ZM24.0673 25.2739C23.7475 25.2736 23.4348 25.3682 23.1687 25.5456C22.9027 25.7231 22.6952 25.9755 22.5726 26.2709C22.45 26.5662 22.4177 26.8913 22.4799 27.2051C22.5421 27.5188 22.6959 27.807 22.922 28.0333C23.148 28.2595 23.436 28.4137 23.7497 28.4763C24.0633 28.5388 24.3884 28.5069 24.684 28.3847C24.9795 28.2624 25.2321 28.0552 25.4099 27.7894C25.5876 27.5235 25.6826 27.2109 25.6826 26.8911C25.6821 26.4627 25.5118 26.052 25.2091 25.7489C24.9063 25.4458 24.4957 25.2752 24.0673 25.2743V25.2739Z" fill="#1C1D1D"/>
+            </svg>
+            {% comment %}
+            <img width="25" height="25" src="https://cdn.shopify.com/s/files/1/0574/6642/1428/files/toppng.com-luxury-goods-tide-icon-comments-bag-cart-icon-906x980.png?v=1625165166" alt="{{ item.title | escape }}">
+            {% endcomment %}
+            {%- else -%}
+              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-bag" viewBox="0 0 64 64"><g fill="none" stroke="#000" stroke-width="2"><path d="M25 26c0-15.79 3.57-20 8-20s8 4.21 8 20"/><path d="M14.74 18h36.51l3.59 36.73h-43.7z"/></g></svg>
+            {%- endif -%}
+            <span class="icon__fallback-text">{{ 'layout.cart.title' | t }}</span>
+            <span class="cart-link__bubble{% if cart.item_count > 0 %} cart-link__bubble--visible{% endif %}">{{cart.item_count }}</span>
+          </span>
+        </a>
+
+      {% endif %}
+
+      <a href="{{ link.url }}" class="site-nav__link site-nav__link--underline main-menu-font{% if has_dropdown %} site-nav__link--has-dropdown{% endif %}" style="color: #E5925C;">
+        {{ link.title }}
+      </a>
+
+      {%- if is_megamenu -%}
+        {%- assign previous_column_type = '' -%}
+        {%- assign animation_column = 1 -%}
+
+        <div class="site-nav__dropdown megamenu text-left">
+          <div class="page-width">
+            <div class="grid{% if dropdown_alignment == 'center' %} grid--center{% endif %}">
+              <div class="grid__item medium-up--one-fifth appear-animation appear-delay-{{ animation_column }}">
+                {%- assign animation_column = animation_column | plus: 1 -%}
+
+                {%- for childlink in link.links -%}
+                  {%- liquid
+                    assign create_new_column = false
+
+                    if childlink.levels > 0 and forloop.index != 1
+                      assign create_new_column = true
+                    endif
+
+                    if childlink.levels == 0 and previous_column_type == 'full'
+                      assign create_new_column = true
+                    endif
+                  -%}
+
+                  {%- if create_new_column -%}
+                    </div><div class="grid__item medium-up--one-fifth appear-animation appear-delay-{{ animation_column }}">
+                    {%- assign animation_column = animation_column | plus: 1 -%}
+                  {%- endif -%}
+
+                  {%- assign subcollection_drop = false -%}
+                  {%- if childlink.levels > 0 and childlink.url contains '/collections/' -%}
+                    {%- liquid
+                      assign lang_code_string = request.locale.iso_code | prepend: '/'
+                      assign subcollection_handle = childlink.url | remove: '/collections/' | remove: lang_code_string
+                      assign subcollection_drop = collections[subcollection_handle]
+                    -%}
+                    {%- if subcollection_drop.image != blank -%}
+                      <a
+                        href="{{ childlink.url }}"
+                        class="megamenu__colection-image"
+                        aria-label="{{collections[subcollection_handle].title}}"
+                        style="background-image: url({{ collections[subcollection_handle].image | img_url: '400x' }})"></a>
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  <div class="h5">
+                    <a href="{{ childlink.url }}" class="site-nav__dropdown-link site-nav__dropdown-link--top-level">{{ childlink.title }}</a>
+                  </div>
+
+                  {%- liquid
+                    if childlink.levels > 0
+                      assign previous_column_type = 'full'
+                    else
+                      assign previous_column_type = 'single'
+                    endif
+                  -%}
+
+                  {%- for grandchildlink in childlink.links -%}
+                    <div>
+                      <a href="{{ grandchildlink.url }}" class="site-nav__dropdown-link">
+                        {{grandchildlink.title}}
+                      </a>
+                    </div>
+                  {%- endfor -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- elsif has_dropdown -%}
+        <ul class="site-nav__dropdown text-left">
+          {%- for childlink in link.links -%}
+            {%- liquid
+              assign has_sub_dropdown = false
+              if childlink.links != blank
+                assign has_sub_dropdown = true
+              endif
+            -%}
+
+            <li class="{% if has_sub_dropdown %} site-nav__deep-dropdown-trigger{% endif %}">
+              <a href="{{ childlink.url }}" class="site-nav__dropdown-link site-nav__dropdown-link--second-level{% if has_sub_dropdown %} site-nav__dropdown-link--has-children{% endif %}">
+                {{ childlink.title | escape }}
+                {%- if has_sub_dropdown -%}
+                  <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-chevron-down" viewBox="0 0 28 16"><path d="M1.57 1.59l12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none" fill-rule="evenodd"/></svg>
+                {%- endif -%}
+              </a>
+              {%- if has_sub_dropdown -%}
+                <ul class="site-nav__deep-dropdown">
+                  {%- for grandchildlink in childlink.links -%}
+                    <li>
+                      <a href="{{ grandchildlink.url }}" class="site-nav__dropdown-link">{{ grandchildlink.title | escape }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</ul>

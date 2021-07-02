@@ -1,0 +1,41 @@
+{%- if linklists[block.settings.menu].links.size > 0 -%}
+  {%- if block.settings.show_footer_title -%}
+    <p class="h4 footer__title small--hide">
+      {{ linklists[block.settings.menu].title }}
+    </p>
+    <button type="button" class="h4 footer__title collapsible-trigger collapsible-trigger-btn medium-up--hide" aria-controls="Footer-{{ block.id }}">
+      {{ linklists[block.settings.menu].title }}
+      {%- render 'collapsible-icons' -%}
+    </button>
+  {%- endif -%}
+  <div
+    {% if block.settings.show_footer_title %}
+      id="Footer-{{ block.id }}" class="collapsible-content collapsible-content--small"
+    {% endif %}>
+    <div class="collapsible-content__inner">
+      <div class="footer__collapsible{% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}">
+        <ul class="no-bullets site-footer__linklist footer-menu-font">
+          {%- for link in linklists[block.settings.menu].links -%}
+            <li class="footer-menu-font"><a href="{{ link.url }}">{{ link.title }}</a>
+              {% if link.links != blank %}
+                <ul class="child" style="list-style-type: none;">
+                  {% for child_link in link.links %}
+                  <li><a href= "{{ child_link.url }}">{{ child_link.title }}</a>
+                  {% if child_link.links != blank %}
+                    <ul class="grandchild" style="list-style-type: none;">
+                    {% for grandchild_link in child_link.links %}
+                      <li><a href= "{{ grandchild_link.url }}">{{ grandchild_link.title }}</a></li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                  </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

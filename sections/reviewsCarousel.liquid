@@ -1,0 +1,52 @@
+<div class="home-yotpo-reviews-carousel index-section">
+  <div class="page-width">
+    <div class="yotpo yotpo-reviews-carousel"
+    data-background-color="transparent"
+    data-mode="manual"
+    data-type="both"
+    data-review-ids="172462517,177361229,177227673,175459405,176245614,173867049,174943180,173040838,174000460"
+    data-show-bottomline="1"
+    data-autoplay-enabled="1"
+    data-autoplay-speed="3000"
+    data-show-navigation="1"
+    data-testimonials-page-enabled="1"
+    data-testimonials-page-text="See All Reviews"
+    data-testimonials-page-link="https://vitalbodytherapeutics.com/pages/reviews">&nbsp;</div> 
+  </div>
+</div>
+
+<style>
+  @media screen and (max-width: 480px) {
+    .home-yotpo-reviews-carousel .page-width .yotpo-reviews-carousel .carousel-display-wrapper {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+</style>
+
+<script>
+           setTimeout(function(){
+             yotpo.refreshWidgets();
+             console.log('yotpo refreshed');
+           },2000);             
+         </script> 
+
+
+{% schema %}
+{
+  "name": "Yotpo Reviews Carousel",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Reviews Carousel",
+      "category": "Yotpo Reviews Carousel"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
