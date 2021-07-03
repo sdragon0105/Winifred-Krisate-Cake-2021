@@ -309,17 +309,22 @@
               </div>
             {%- endif -%}
 
+
             <div class="like-section">
+
               <div class="like-item">
+                {% comment %}
                 <svg class="svg-icon" style="width: 40pox; height: 40px; vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M799.402667 552.209067l-289.621334 289.621333-289.621333-289.621333a204.8 204.8 0 1 1 289.621333-289.655467 204.8 204.8 0 1 1 289.621334 289.655467z m-36.181334-36.215467a153.6 153.6 0 1 0-217.224533-217.224533 51.2 51.2 0 0 1-72.430933 0 153.6 153.6 0 1 0-217.224534 217.224533l253.44 253.44 253.44-253.44z" fill="#999999" /></svg>
-                <span class="content-font">Save It for Later</span>
+                {% endcomment %}
+                <div id="oneteam-like"></div>
+                <span class="like-label content-font">Save It for Later</span>
               </div>
 
-              <div class="like-content">
-                <li>Online Store: LowStock</li>
-                <li>BTV Design Store: Out of Stock</li>
-                <li>BTV Design Post: Out of Stock</li>
-                <li>BTV Funan: Low Stock</li>
+              <div class="like-content content-font">
+                <li>Online Store: <b>Low Stock</b></li>
+                <li>BTV Design Store: <b>Out of Stock</b></li>
+                <li>BTV Design Post: <b>Out of Stock</b></li>
+                <li>BTV Funan: <b>Low Stock</b></li>
               </div>
             </div>
 
@@ -327,9 +332,9 @@
               <div class="product-single__description rte">
 
                 <ul class="tabs">
-                  <li class="tab active" data-content-id="tab-content-1">Product Details</li>
-                  <li class="tab" data-content-id="tab-content-2">Washcare</li>
-                  <li class="tab" data-content-id="tab-content-3">Product Measurement</li>
+                  <li class="tab active product-details-font" data-content-id="tab-content-1">Product Details</li>
+                  <li class="tab product-details-font" data-content-id="tab-content-2">Washcare</li>
+                  <li class="tab product-details-font" data-content-id="tab-content-3">Product Measurement</li>
                 </ul>
 
                 <div id="tab-content-1" class="tab-content active">{{ product.description }}</div>
@@ -372,9 +377,9 @@
         <div class="product-single__description-full rte">
 
           <ul class="tabs">
-            <li class="tab" data-content-id="tab-content-1">Product Details</li>
-            <li class="tab" data-content-id="tab-content-2">Washcare</li>
-            <li class="tab" data-content-id="tab-content-3">Product Measurement</li>
+            <li class="tab product-details-font" data-content-id="tab-content-1">Product Details</li>
+            <li class="tab product-details-font" data-content-id="tab-content-2">Washcare</li>
+            <li class="tab product-details-font" data-content-id="tab-content-3">Product Measurement</li>
           </ul>
 
           <div id="tab-content-1" class="tab-content">{{ product.description }}</div>

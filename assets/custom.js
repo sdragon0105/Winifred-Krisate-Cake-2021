@@ -11,3 +11,7 @@ for (let i = 0; i < content_item.length; i++) {
     content_item[i].querySelector('.group-grid-product__meta--position').style.left = width3+"px";
 }
 
+function like_state() {
+    document.querySelector('.svg-icon path').style.fill = 'red' ;
+    alert(111);
+}
