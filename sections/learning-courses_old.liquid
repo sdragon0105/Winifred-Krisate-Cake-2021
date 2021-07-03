@@ -23,7 +23,6 @@
       endcase
     -%}
     {%- for block in section.blocks -%}
-      {% assign product = all_products[block.settings.product_image] %}
       {%- if section.blocks.size == 5 and forloop.index < 3 -%}
         {%- assign column_width = 'medium-up--one-half' -%}
       {%- else -%}
@@ -32,17 +31,25 @@
       <div class="grid__item {{ column_width }} text-{{ section.settings.align_text }}" {{ block.shopify_attributes }} data-aos="row-of-3">
         {%- if block.settings.enable_image -%}
           <div style="{% if section.settings.align_text == 'center' %}margin: 0 auto;{% endif %} max-width: {{ block.settings.image_width }}px;">
-
-            <a href="{{ product.url }}">
-              {%- if block.settings.product_image != blank -%}
-                {%- render 'product-images',
-                  product: block.settings.product_image
-                -%}
-              {%- else -%}
-                <div class="image-wrap text-spacing">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
-              {%- endif -%}
-            </a>
-
+            {%- if block.settings.button_link != blank -%}
+              <a href="{{ block.settings.button_link }}">
+            {%- endif -%}
+            {%- if block.settings.image != blank -%}
+              <div class="image-wrap text-spacing" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                <img class="lazyload"
+                    data-src="{{ img_url }}"
+                    data-widths="[180, 360, 540, 720, 900, 1080]"
+                    data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                    data-sizes="auto"
+                    alt="{{ block.settings.image.alt }}">
+              </div>
+            {%- else -%}
+              <div class="image-wrap text-spacing">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+            {%- if block.settings.button_link != blank -%}
+              </a>
+            {%- endif -%}
           </div>
         {%- endif -%}
         {%- if block.settings.subheading != blank -%}
@@ -131,9 +138,9 @@
             "default": true
           },
           {
-            "type": "product",
-            "id": "product_image",
-            "label": "Product"
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
           },
           {
             "type": "range",
