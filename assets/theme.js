@@ -2000,7 +2000,7 @@ lazySizesConfig.expFactor = 4;
     function stickyHeaderSetup() {
       if (!config.stickyInitialized) {
         $parent.addClass(classes.stickyBodyClass);
-        $siteHeader.wrap('<div class="site-header-sticky"></div>');
+        $siteHeader.wrap('<div class=""></div>');
 
         stickyHeaderHeight();
         setTimeout(function() {
@@ -2033,11 +2033,11 @@ lazySizesConfig.expFactor = 4;
 
     function stickyHeaderHeight() {
       var height = $siteHeader.outerHeight(true);
-      var $stickyHeader = $('.site-header-sticky').css('height', height+10);
+      var $stickyHeader = $('.site-header-sticky').css('height', height+0);
 
       // Also update top position of sticky sidebar
       if ($('.grid__item--sidebar').length) {
-        $('.grid__item--sidebar').css('top', height + 10);
+        $('.grid__item--sidebar').css('top', height + 0);
       }
     }
 
