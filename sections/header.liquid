@@ -163,18 +163,29 @@
                 {%- if section.settings.main_menu_alignment == 'center-left' -%}
                   {%- render 'header-desktop-nav', main_menu: main_menu, dropdown_alignment: dropdown_alignment -%}
 
+                  <button
+                    type="button"
+                    class="site-nav__link site-nav__link--icon js-drawer-open-nav{% if section.settings.main_menu_alignment == 'left' or section.settings.main_menu_alignment == 'left-center' %} medium-up--hide{% endif %}"
+                    aria-controls="NavDrawer">
+                    <svg width="30" height="15" viewBox="0 0 30 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="29.4528" height="2.5" fill="#1C1D1D"/>
+                      <rect y="6" width="29.4528" height="2.5" fill="#1C1D1D"/>
+                      <rect y="12" width="29.4528" height="2.5" fill="#1C1D1D"/>
+                    </svg>
+                    <span class="icon__fallback-text">{{ 'general.drawers.navigation' | t }}</span>
+                  </button>
                 {%- endif -%}
 
                 <div class="site-nav{% unless section.settings.main_menu_alignment == 'center-drawer' %} medium-up--hide{% endunless %}">
-                  <button
-                    type="button"
-                    class="site-nav__link site-nav__link--icon js-drawer-open-nav"
-                    aria-controls="NavDrawer">
-                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-hamburger" viewBox="0 0 64 64"><path d="M7 15h51M7 32h43M7 49h51"/></svg>
-                    <span class="icon__fallback-text">{{ 'general.drawers.navigation' | t }}</span>
-                  </button>
+                    <button
+                      type="button"
+                      class="site-nav__link site-nav__link--icon js-drawer-open-nav"
+                      aria-controls="NavDrawer">
+                      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-hamburger" viewBox="0 0 64 64"><path d="M7 15h51M7 32h43M7 49h51"/></svg>
+                      <span class="icon__fallback-text">{{ 'general.drawers.navigation' | t }}</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
 
               {%- if section.settings.main_menu_alignment == 'center-split' -%}
                 {%- render 'header-split-nav', main_menu: main_menu, section: section, dropdown_alignment: dropdown_alignment -%}
