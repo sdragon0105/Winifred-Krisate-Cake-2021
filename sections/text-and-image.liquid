@@ -17,7 +17,7 @@
     {%- capture image_layout -%}
 
       {%- for block in section.blocks -%}
-        <div class="image__item one-fifth">
+        <div class="image__item one-fifth" style="padding-left: 15px;">
           <div style="margin-left: auto; max-width: {{ section.settings.image_width }}px; {% if forloop.index == 1 %}padding-top: 80px;{%endif%}">
             {%- if block.settings.image != blank -%}
               {%- if section.settings.button_label != blank and section.settings.button_link != blank %}<a href="{{ section.settings.button_link }}">{% endif -%}
