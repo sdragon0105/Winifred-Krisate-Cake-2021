@@ -16,7 +16,7 @@
       <div class="footer__collapsible{% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}">
         <ul class="no-bullets site-footer__linklist footer-menu-font">
           {%- for link in linklists[block.settings.menu].links -%}
-            <li class="footer-menu-font"><a href="{{ link.url }}">{{ link.title }}</a>
+            <li><a href="{{ link.url }}" class="footer-menu-font">{{ link.title }}</a>
               {% if link.links != blank %}
                 <ul class="child" style="list-style-type: none;">
                   {% for child_link in link.links %}

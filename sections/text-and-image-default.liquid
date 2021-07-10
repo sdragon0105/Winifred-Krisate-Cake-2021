@@ -2,7 +2,7 @@
 
 <div class="page-width home-page-last-section--position">
   {%- capture image_layout -%}
-    <div class="feature-row__item">
+    <div class="feature-row__item" style="order: 2;">
       <div style="margin: 0 auto; max-width: {{ section.settings.image_width }}px;">
         {%- if section.settings.image != blank -%}
           {%- if section.settings.button_label != blank and section.settings.button_link != blank %}<a href="{{ section.settings.button_link }}">{% endif -%}
@@ -30,7 +30,7 @@
       {{ image_layout }}
     {%- endif -%}
 
-    <div class="feature-row__item feature-row__text feature-row__text--{{ section.settings.layout }}" style="max-width: 540px;">
+    <div class="feature-row__item feature-row__text feature-row__text--{{ section.settings.layout }}" style="max-width: 540px; order: 1;">
       {%- if section.settings.subtitle != blank -%}
         <p class="h5 subheader-font">{{ section.settings.subtitle }}</p>
       {%- endif -%}

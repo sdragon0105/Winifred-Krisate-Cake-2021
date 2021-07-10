@@ -11,7 +11,7 @@
       id="Footer-{{ block.id }}" class="collapsible-content collapsible-content--small"
     {% endif %}>
     <div class="collapsible-content__inner">
-      <div class="footer__collapsible{% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}">
+      <div class="footer__collapsible {% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}" style="font-family: 'Graphik-Regular' !important; font-size: 17px;">
         {%- if block.settings.image != blank -%}
           <div class="image-wrap text-spacing" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
             {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}

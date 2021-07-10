@@ -34,6 +34,8 @@
   align-items: center;
   min-width: 33% !important;
   text-align: center;
+  margin-right: 90px;
+  order: 1;
 }
 .featured-row__subtext p {
   font-size: 0.9em;
@@ -53,7 +55,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 397px;
+  padding: 30px 10px;
   background-color: #E7AB90;
   color: white;
 }
@@ -289,15 +291,85 @@ li.tab.active {
   width: 85%;
   margin: auto;
 }
+.feature-contnet--style {
+  margin-bottom: 50px;
+}
+.image-item--align {
+  padding-left: 15px;
+}
+.wedding-commissions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  order: 2;
+  z-index: 1;
+}
+.button--padding-style {
+  padding: 25px 60px;
+}
 
 
+@media (max-width : 768px) {
+  .header-font {
+    font-size: 37px !important;
+  }
+  .content-font {
+    font-size: 14px !important;
+  }
+  .subheader-font, .button-font, .footer-menu-font {
+    font-size: 8px !important;
+  }
+  .feature-contnet--style {
+    // display: none;
+  }
+  .page-width--background-color {
+    margin-top: -90px;
+  }
 
+  .feature-row__text--align {
+    margin-right: 0;
+  }
+  .feature-content {
+    padding: 100px 0 90px 0;
+  }
+  .wedding-commissions {
+    padding-top: 20px;
+  }
+  .title-new-mark {
+    height: 110px !important;
+    width: 85px !important;
+  }
+  .button-item {
+    margin-bottom: 100px;
+  }
+  .home-page-last-section--position {
+    margin-top: 0;
+  }
+  .button-item {
+    margin-bottom: 0 !important;
+  }
+  .button--padding-style {
+    padding: 10px 30px;
+  }
+  .image-background {
+    height: 390px !important;
+  }
+}
+.site-footer__linklist li {
+  padding: 5px 0;
+}
 
+@media  only screen and (min-width : 769px) and (max-width : 1280px) {
+  .medium-up--one-quarter {
+    width: 50% !important;
+  }
+}
 
 
 .header-font {
-  font-family: "ChiswickSans-Light" !important;
-  font-size: 45px !important;
+  font-family: "ChiswickSans-Light";
+  font-size: 45px;
+}
 .header-font-32 {
   font-family: "ChiswickSans-Light" !important;
   font-size: 32px !important;
@@ -316,7 +388,7 @@ li.tab.active {
 }
 .content-font, .breadcrumb-font {
   font-family: "Graphik-Regular" !important;
-  font-size: 17px !important;
+  font-size: 17px;
 }
 .product-details-font {
   font-family: "Graphik-Regular" !important;
@@ -334,6 +406,7 @@ li.tab.active {
   font-family: "Graphik-Wide-Medium" !important;
   font-size: 12px !important;
 }
+
 
 
 
